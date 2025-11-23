@@ -54,7 +54,8 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Your answer...
+Type 1 Slowly Changing Dimension – Overwrite Model Type 1 SCDs do not maintain history. They always reflect the latest, current values. Model is simply and uses less storage. 
+Type 2 Slowly Changing Dimension – History-Preserving Model. Type 2 SCDs create a new row per change, preserving full history with effective dates and a current flag. This model support point in time reporting. 
 ```
 
 ***
