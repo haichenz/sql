@@ -28,13 +28,13 @@ filtered by customer IDs between 8 and 10 (inclusive) using either:
 -- option 1
 SELECT *, quantity * cost_to_customer_per_qty as price
 FROM customer_purchases
-WHERE product_id >= 8 and product_id <= 10;
+WHERE customer_id >= 8 and customer_id <= 10;
 
 
 -- option 2
 SELECT *, quantity * cost_to_customer_per_qty as price
 FROM customer_purchases
-WHERE product_id BETWEEN 8 and 10;
+WHERE customer_id BETWEEN 8 and 10;
 
 --CASE
 /* 1. Products can be sold by the individual unit or by bulk measures like lbs. or oz. 
@@ -52,7 +52,7 @@ contains the word “pepper” (regardless of capitalization), and otherwise out
 
 SELECT product_id,  product_name, 
 case when product_qty_type = 'unit' THEN 'unit' else 'bulk' end as prod_qty_type_condensed,
-CASE WHEN product_name like '%peppers%' THEN 1 else 0 end as pepper_flag
+CASE WHEN lower(product_name) like '%peppers%' THEN 1 else 0 end as pepper_flag
 FROM product;
 
 --JOIN
@@ -70,7 +70,7 @@ order by vendor_name, market_date;
 -- AGGREGATE
 /* 1. Write a query that determines how many times each vendor has rented a booth 
 at the farmer’s market by counting the vendor booth assignments per vendor_id. */
-SELECT vendor_id, count (booth_number)
+SELECT vendor_id, count (*)
 FROM vendor_booth_assignments
 group by vendor_id;
 
@@ -86,7 +86,7 @@ customer_first_name,
 customer_last_name, 
 sum(cp.quantity * cp.cost_to_customer_per_qty) as tot_spd
 FROM customer c
-left join customer_purchases cp
+INNER join customer_purchases cp
 on c.customer_id = cp.customer_id
 group by c.customer_id
 having tot_spd > 2000
@@ -115,7 +115,7 @@ INSERT INTO temp.new_vendor
 VALUES
 (10, 'Thomass Superfood Store', 'Fresh Focused', 'Thomas', 'Rosenthal');
 
-SELECT * FROM "new_vendor";
+SELECT * FROM temp.new_vendor;
 
 -- Date
 /*1. Get the customer_id, month, and year (in separate columns) of every purchase in the customer_purchases table.
